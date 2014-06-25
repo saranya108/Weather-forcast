@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="jquery-1.4.1.js" type="text/javascript"></script>
+<script src="jquery.SPServices-0.6.1.min.js" type="text/javascript"></script>
+<script src="weathersearch.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="weather.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>My favorite city weather</title>
+<script>
+$(document).ready(function(){
+    var counter = 2;
+    var msg = '';
+    var emsg = '';
+    var show = 1;
+    /* var uname = $().SPServices.SPGetCurrentUser({
+		fieldName : "UserName",
+		debug : false
+	});  */
+	var uname = "sara";
+	 var setwoeid = localStorage.getItem(uname);
+	 if(setwoeid != ""){
+		 if(setwoeid!=null){
+	getdetailedforecast(setwoeid);
+		 }
+	}else{
+		show = 0;
+	}
+	 if(show==1&&setwoeid != null){
+		 htmlbit='<span><b>Your current favorite city\'s weather:</b></br><small>(If you wish to change please enter cities above)</small></span>';
+		 $('#main').append(htmlbit);
+	 }else{
+		 htmlinfo='<span><small>You have not set any favorite city to request weather report for. </br>Please enter your favorite cities above and click on submit.</small></span>';
+		 $('#main').append(htmlinfo);
+	 }
+    $("#addCity").click(function () {
+		if(counter>5){
+    	       alert("A maximum of 5 favorite cities can be maintained");
+   	        return false;
+		}   
+		var newCityDiv = $(document.createElement('div')).attr("id", 'CityDiv' + counter);
+		newCityDiv.append('<label>'+counter+'. Enter city :</label>'+'<input type="text" name="city'+ counter +'" id="city' + counter + '" value="" ><input type="button" id="search'+counter+'" name="search'+counter+'" value="Search"></input><div id="cityname'+counter+'" style="font-size: 12px"></div>');
+		newCityDiv.appendTo("#CityGroup");
+		counter++;
+	
+		$('#search2').click(function() {
+			requestValidName(2);		
+	  });
+		$('#search3').click(function() {
+			requestValidName(3);		
+	  });
+		$('#search4').click(function() {
+			requestValidName(4);		
+	  });
+		$('#search5').click(function() {
+			requestValidName(5);		
+	  });
+		$('#search1').click(function() {
+	 		requestValidName(1);		
+	  });
+    });
+
+	$('#search1').click(function() {
+		requestValidName(1);		
+ });
+    $("#removeCity").click(function () {
+	 	if(counter==1){
+     	     alert("No more city can be removed");
+    	     return false;
+      }   
+		counter--;
+   	$("#CityDiv" + counter).remove();
+   	$("#CityDivHidden" + counter).remove();
+   	if(counter == 1){
+   			msg = '';
+   		}
+		else{
+   			msg = emsg;    	
+   		}
+     });
+    $("#submit").click(function () {
+   	 $('#main').find('span').remove();
+   	 htmlbit='<span><b>Your current favorite city\'s weather:</b></br><small>(If you wish to change please enter cities above)</small></span>';
+		 $('#main').append(htmlbit);
+		for(i=1; i<counter; i++){
+			if(i==1){
+  		  msg = $('#hidden' + i).val();
+			}else{
+				 msg = emsg + "," + $('#hidden' + i).val();
+			}
+			emsg = msg;
+		}
+		getdetailedforecast(msg);  	 
+		localStorage.setItem(uname,msg);
+    });
+ });
+</script>
+</head>
+<body style="margin-left: 75px">
+<div id="main" style="margin-left: 425px">
+<div id='CityGroup'>
+	<div id="CityDiv1">
+		<label>1. Enter city: </label><input type="text" id="city1"><input type="button" id="search1" name="search1" value="Search"></input><div id="cityname1" style="font-size: 12px"></div>
+	</div>
+</div>
+<input type="button" value="Add City" id="addCity">
+<input type="button" value="Remove City" id="removeCity">
+<input type="button" value="Submit" id="submit"></br>
+</br>
+</div>
+<div id="detailedforecasts">
+</div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+@CHARSET "ISO-8859-1";
+
+body {
+	margin: 1em 3em;
+	font-family: Tahoma, Genevam, sans-serif;
+}
+
+form {
+	margin-bottom: 1em;
+}
+
+div {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 90%;
+}
+
+.forecast {
+	width: 280px;
+	margin: 2em 3em;
+	background-color: #e7ecf5;
+}
+
+.quickweather {
+	width: 28px;
+	margin: 2em 3em;
+	background-color: #e7ecf5;
+}
